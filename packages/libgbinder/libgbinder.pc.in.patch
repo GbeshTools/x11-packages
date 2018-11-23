@@ -1,0 +1,12 @@
+diff -uNr libgbinder-1.0.13/libgbinder.pc.in libgbinder-1.0.13.mod/libgbinder.pc.in
+--- libgbinder-1.0.13/libgbinder.pc.in	2018-11-17 01:58:33.000000000 +0200
++++ libgbinder-1.0.13.mod/libgbinder.pc.in	2018-11-23 18:11:07.991468149 +0200
+@@ -1,6 +1,6 @@
+ name=gbinder
+-libdir=/usr/lib
+-includedir=/usr/include
++libdir=@TERMUX_PREFIX@/lib
++includedir=@TERMUX_PREFIX@/include
+ 
+ Name: libgbinder
+ Description: Binder client library

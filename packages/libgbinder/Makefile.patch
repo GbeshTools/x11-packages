@@ -1,0 +1,53 @@
+diff -uNr libgbinder-1.0.13/Makefile libgbinder-1.0.13.mod/Makefile
+--- libgbinder-1.0.13/Makefile	2018-11-17 01:58:33.000000000 +0200
++++ libgbinder-1.0.13.mod/Makefile	2018-11-23 18:13:28.471599585 +0200
+@@ -87,15 +87,16 @@
+ # Tools and flags
+ #
+ 
+-CC = $(CROSS_COMPILE)gcc
++CC ?= $(CROSS_COMPILE)gcc
+ LD = $(CC)
++STRIP ?= $(CROSS_COMPILE)strip
+ WARNINGS = -Wall -Wstrict-aliasing -Wunused-result
+ INCLUDES = -I$(INCLUDE_DIR)
+ BASE_FLAGS = -fPIC
+ FULL_CFLAGS = $(BASE_FLAGS) $(CFLAGS) $(DEFINES) $(WARNINGS) $(INCLUDES) \
+   -MMD -MP $(shell pkg-config --cflags $(PKGS))
+ FULL_LDFLAGS = $(BASE_FLAGS) $(LDFLAGS) -shared -Wl,-soname,$(LIB_SONAME) \
+-  $(shell pkg-config --libs $(PKGS)) -lpthread
++  $(shell pkg-config --libs $(PKGS))
+ DEBUG_FLAGS = -g
+ RELEASE_FLAGS =
+ COVERAGE_FLAGS = -g
+@@ -129,7 +130,7 @@
+ 
+ DEPS = $(DEBUG_OBJS:%.o=%.d) $(RELEASE_OBJS:%.o=%.d)
+ ifneq ($(MAKECMDGOALS),clean)
+-ifneq ($(strip $(DEPS)),)
++ifneq ($($(STRIP) $(DEPS)),)
+ -include $(DEPS)
+ endif
+ endif
+@@ -232,7 +233,7 @@
+ 	$(LD) $(RELEASE_OBJS) $(RELEASE_LDFLAGS) -o $@
+ 	ln -sf $(LIB_SO) $(RELEASE_LINK)
+ ifeq ($(KEEP_SYMBOLS),0)
+-	strip $@
++	$(STRIP) $@
+ endif
+ 
+ $(DEBUG_LIB): $(DEBUG_OBJS)
+@@ -260,9 +261,9 @@
+ INSTALL_DIRS = $(INSTALL) -d
+ INSTALL_FILES = $(INSTALL) -m $(INSTALL_PERM)
+ 
+-INSTALL_LIB_DIR = $(DESTDIR)/usr/lib
+-INSTALL_INCLUDE_DIR = $(DESTDIR)/usr/include/$(NAME)
+-INSTALL_PKGCONFIG_DIR = $(DESTDIR)/usr/lib/pkgconfig
++INSTALL_LIB_DIR = $(DESTDIR)/lib
++INSTALL_INCLUDE_DIR = $(DESTDIR)/include/$(NAME)
++INSTALL_PKGCONFIG_DIR = $(DESTDIR)/lib/pkgconfig
+ 
+ install: $(INSTALL_LIB_DIR)
+ 	$(INSTALL_FILES) $(RELEASE_SO) $(INSTALL_LIB_DIR)

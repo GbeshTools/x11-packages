@@ -1,0 +1,45 @@
+diff -uNr libglibutil-1.0.33/Makefile libglibutil-1.0.33.mod/Makefile
+--- libglibutil-1.0.33/Makefile	2018-11-03 10:49:01.000000000 +0200
++++ libglibutil-1.0.33.mod/Makefile	2018-11-23 18:05:13.228596839 +0200
+@@ -81,8 +81,9 @@
+ # Tools and flags
+ #
+ 
+-CC = $(CROSS_COMPILE)gcc
++CC ?= $(CROSS_COMPILE)gcc
+ LD = $(CC)
++STRIP ?= $(CROSS_COMPILE)strip
+ WARNINGS = -Wall
+ INCLUDES = -I$(INCLUDE_DIR)
+ BASE_FLAGS = -fPIC
+@@ -120,7 +121,7 @@
+ 
+ DEPS = $(DEBUG_OBJS:%.o=%.d) $(RELEASE_OBJS:%.o=%.d)
+ ifneq ($(MAKECMDGOALS),clean)
+-ifneq ($(strip $(DEPS)),)
++ifneq ($($(STRIP) $(DEPS)),)
+ -include $(DEPS)
+ endif
+ endif
+@@ -197,7 +198,7 @@
+ 	$(LD) $(RELEASE_OBJS) $(RELEASE_LDFLAGS) -o $@
+ 	ln -sf $(LIB) $(RELEASE_LINK)
+ ifeq ($(KEEP_SYMBOLS),0)
+-	strip $@
++	$(STRIP) $@
+ endif
+ 
+ $(PKGCONFIG): $(LIB_NAME).pc.in
+@@ -213,9 +214,9 @@
+ INSTALL_DIRS = $(INSTALL) -d
+ INSTALL_FILES = $(INSTALL) -m $(INSTALL_PERM)
+ 
+-INSTALL_LIB_DIR = $(DESTDIR)/usr/lib
+-INSTALL_INCLUDE_DIR = $(DESTDIR)/usr/include/gutil
+-INSTALL_PKGCONFIG_DIR = $(DESTDIR)/usr/lib/pkgconfig
++INSTALL_LIB_DIR = $(DESTDIR)/lib
++INSTALL_INCLUDE_DIR = $(DESTDIR)/include/gutil
++INSTALL_PKGCONFIG_DIR = $(DESTDIR)/lib/pkgconfig
+ 
+ install: $(INSTALL_LIB_DIR)
+ 	$(INSTALL_FILES) $(RELEASE_LIB) $(INSTALL_LIB_DIR)

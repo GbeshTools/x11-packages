@@ -1,0 +1,12 @@
+diff -uNr libglibutil-1.0.33/libglibutil.pc.in libglibutil-1.0.33.mod/libglibutil.pc.in
+--- libglibutil-1.0.33/libglibutil.pc.in	2018-11-03 10:49:01.000000000 +0200
++++ libglibutil-1.0.33.mod/libglibutil.pc.in	2018-11-23 18:02:55.869236465 +0200
+@@ -1,6 +1,6 @@
+ name=glibutil
+-libdir=/usr/lib
+-includedir=/usr/include
++libdir=@TERMUX_PREFIX@/lib
++includedir=@TERMUX_PREFIX@/include
+ 
+ Name: libglibutil
+ Description: Library of glib utilities
