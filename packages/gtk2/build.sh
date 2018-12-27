@@ -21,7 +21,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 --disable-papi
 --enable-introspection=no
 "
-
+TERMUX_MAKE_PROCESSES=8
 ## 1. gtk-update-icon-cache is subpackage of 'gtk3'
 ## 2. locales are not supported by Termux and wasting space
 TERMUX_PKG_RM_AFTER_INSTALL="
